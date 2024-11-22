@@ -30,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
-        $sql = "SELECT id, username, password, role FROM Users WHERE username = ?";
+        $sql = "SELECT id, username, password, role, is_verified FROM Users WHERE username = ?";
         
         if($stmt = mysqli_prepare($conn, $sql)){
             mysqli_stmt_bind_param($stmt, "s", $param_username);
@@ -40,17 +40,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_store_result($stmt);
                 
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $role);
+                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password, $role, $is_verified);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
-                            session_start();
-                            
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;
-                            $_SESSION["role"] = $role;
-                            
-                            header("location: index.php");
+                            if($is_verified == 1){
+                                session_start();
+                                
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["id"] = $id;
+                                $_SESSION["username"] = $username;
+                                $_SESSION["role"] = $role;
+                                
+                                // Redirect based on user role
+                                switch ($role) {
+                                    case 'admin':
+                                        header("location: admin_dashboard.php");
+                                        break;
+                                    case 'lawyer':
+                                        header("location: lawyer_dashboard.php");
+                                        break;
+                                    case 'user':
+                                        header("location: user_dashboard.php");
+                                        break;
+                                    default:
+                                        header("location: index.php");
+                                        break;
+                                }
+                            } else {
+                                $login_err = "Your email is not verified. Please check your email for the verification link.";
+                            }
                         } else{
                             $password_err = "The password you entered was not valid.";
                         }
@@ -75,6 +93,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <div class="wrapper">
     <h2>Login</h2>
     <p>Please fill in your credentials to login.</p>
+    <?php 
+    if(!empty($login_err)){
+        echo '<div class="alert alert-danger">' . $login_err . '</div>';
+    }        
+    ?>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
             <label>Username</label>

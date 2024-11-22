@@ -55,6 +55,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)) {
             mysqli_stmt_bind_param($stmt, "iiiis", $user_id, $lawyer_id, $appointment_id, $rating, $review);
             if (mysqli_stmt_execute($stmt)) {
                 $success = "Thank you for your rating and review!";
+                
+                // Fetch the lawyer's user_id
+                $sql_lawyer = "SELECT user_id FROM Lawyers WHERE id = ?";
+                if ($stmt_lawyer = mysqli_prepare($conn, $sql_lawyer)) {
+                    mysqli_stmt_bind_param($stmt_lawyer, "i", $lawyer_id);
+                    if (mysqli_stmt_execute($stmt_lawyer)) {
+                        $result_lawyer = mysqli_stmt_get_result($stmt_lawyer);
+                        $row_lawyer = mysqli_fetch_assoc($result_lawyer);
+                        $lawyer_user_id = $row_lawyer['user_id'];
+                        
+                        // Add notification for the lawyer
+                        $notification_message = "You have received a new review with a rating of " . $rating . " stars.";
+                        add_notification($lawyer_user_id, $notification_message);
+                    }
+                    mysqli_stmt_close($stmt_lawyer);
+                }
             } else {
                 $error = "Oops! Something went wrong. Please try again later.";
             }

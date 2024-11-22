@@ -32,6 +32,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         mysqli_stmt_bind_param($stmt, "sii", $new_status, $appointment_id, $lawyer_id);
         if (mysqli_stmt_execute($stmt)) {
             $success_message = "Appointment status updated successfully.";
+            
+            // Fetch the user_id for the appointment
+            $sql_user = "SELECT user_id FROM Appointments WHERE id = ?";
+            if ($stmt_user = mysqli_prepare($conn, $sql_user)) {
+                mysqli_stmt_bind_param($stmt_user, "i", $appointment_id);
+                if (mysqli_stmt_execute($stmt_user)) {
+                    $result_user = mysqli_stmt_get_result($stmt_user);
+                    $row_user = mysqli_fetch_assoc($result_user);
+                    $user_id = $row_user['user_id'];
+                    
+                    // Add notification for the user
+                    $notification_message = "Your appointment status has been updated to: " . $new_status;
+                    add_notification($user_id, $notification_message);
+                }
+                mysqli_stmt_close($stmt_user);
+            }
         } else {
             $error_message = "Oops! Something went wrong. Please try again later.";
         }

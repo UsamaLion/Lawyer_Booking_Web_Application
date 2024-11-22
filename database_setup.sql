@@ -20,6 +20,14 @@ CREATE TABLE IF NOT EXISTS Lawyers (
     license_number VARCHAR(50) NOT NULL,
     specialization VARCHAR(100) NOT NULL,
     city VARCHAR(100) NOT NULL,
+    bio TEXT,
+    education TEXT,
+    practice_areas TEXT,
+    courts TEXT,
+    fee DECIMAL(10, 2),
+    profile_picture VARCHAR(255),
+    license_id_card VARCHAR(255),
+    education_documents VARCHAR(255),
     approval_status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
     subscription_status ENUM('free', 'premium') DEFAULT 'free',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -113,7 +121,6 @@ CREATE TABLE IF NOT EXISTS BlogPosts (
     FOREIGN KEY (author_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
--- Create email_verificatio table
 CREATE TABLE IF NOT EXISTS email_verification (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -122,7 +129,7 @@ CREATE TABLE IF NOT EXISTS email_verification (
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
--- Create notication table
+
 CREATE TABLE IF NOT EXISTS notifications (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -131,3 +138,4 @@ CREATE TABLE IF NOT EXISTS notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
+

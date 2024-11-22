@@ -27,6 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if (mysqli_stmt_execute($stmt)) {
                 $success_message = "Appointment booked successfully!";
+                
+                // Add notification for the user
+                add_notification($user_id, "You have booked an appointment for " . $appointment_date . " at " . $appointment_time);
+                
+                // Add notification for the lawyer
+                add_notification($lawyer_id, "A new appointment has been booked for " . $appointment_date . " at " . $appointment_time);
             } else {
                 $error_message = "Oops! Something went wrong. Please try again later.";
             }

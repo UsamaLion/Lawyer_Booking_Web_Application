@@ -2,6 +2,21 @@
 session_start();
 require_once "includes/config.php";
 
+// Redirect logged-in users to their respective dashboards
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    switch ($_SESSION["role"]) {
+        case "admin":
+            header("location: admin_dashboard.php");
+            exit;
+        case "lawyer":
+            header("location: lawyer_dashboard.php");
+            exit;
+        case "user":
+            header("location: user_dashboard.php");
+            exit;
+    }
+}
+
 // Fetch featured lawyers
 $sql = "SELECT l.id, u.username, l.specialization, l.city, 
                (SELECT AVG(rating) FROM RatingsReviews WHERE lawyer_id = l.id) as avg_rating

@@ -1,22 +1,32 @@
 # Lawyer Booking Web Application
 
-A web-based application that allows users to book consultations with lawyers. This application provides a platform where users can search for lawyers based on their expertise, availability, and location. It offers an easy-to-use interface for clients to book appointments and manage their bookings efficiently. Lawyers can update their profiles, manage appointments, and track their availability.
+A web-based application that allows users to book consultations with lawyers. This application provides a platform where users can search for lawyers based on their expertise, availability, and location. It offers an easy-to-use interface for clients to book appointments and manage their bookings efficiently. Lawyers can create detailed profiles, manage appointments, and track their availability.
 
 ## Features
 
 - **User Registration & Authentication**: Allows users to create accounts, log in, and manage their profiles.
+- **Lawyer Registration**: Comprehensive lawyer registration process with detailed information and document uploads.
 - **Lawyer Search**: Search and filter lawyers based on practice areas, location, and availability.
 - **Appointment Booking**: Clients can book consultations with lawyers, view available slots, and schedule appointments.
 - **Admin Panel**: Admins can manage user accounts, lawyer profiles, and appointments.
 - **Responsive Design**: Fully responsive web application that works across various devices.
-- **Notifications**: Email notifications for both lawyers and clients about upcoming appointments.
+- **Notifications**: In-app and email notifications for users and lawyers about appointments, reviews, and status changes.
+- **Role-based Access**: Different dashboards and functionalities for regular users, lawyers, and admins.
+- **Review System**: Clients can rate and review lawyers after consultations.
+
+## Recent Updates
+
+- Enhanced lawyer registration process with additional fields and document uploads.
+- Implemented a comprehensive notification system for various events.
+- Added role-based redirection after login for improved user experience.
+- Updated database schema to accommodate new lawyer profile information.
+- Improved file upload functionality with unique filename generation.
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript (React or Vanilla JS)
-- **Backend**: PHP (with a framework like Laravel or plain PHP)
-- **Database**: MySQL (Managed via PHPMyAdmin or similar)
-- **Email Service**: SMTP for email notifications
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: PHP
+- **Database**: MySQL
 - **Version Control**: Git (hosted on GitHub)
 
 ## Installation
